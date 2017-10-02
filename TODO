@@ -1,0 +1,5 @@
+//TODO
+
+* Write collectPupilTrace in selectionLoop
+* Call collectPupilTrace more often, inversion speed remains the same
+* Likelihood function based on derivative
