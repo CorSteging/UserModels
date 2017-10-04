@@ -657,6 +657,7 @@ define inline_script itemArray
 			self.ecc = ecc
 			self.size = size		
 			self.debug = debug
+			self.pupilSizeArray = []
 			brightness = random.choice([1,-1])
 			if len(itemIds) == 4:
 				angle = -.25*np.pi
@@ -815,6 +816,7 @@ define inline_script itemArray
 				eyetracker.log('start_collection')
 				a = collectPupilTrace(self, collectDur)
 				meanPupilSize = np.median(a)
+				self.pupilSizeArray.append(meanPupilSize)
 				self.pupilSizeIndicator.setText(str(meanPupilSize))
 				eyetracker.log('end_collection')
 				return meanPupilSize
@@ -859,7 +861,6 @@ define inline_script itemArray
 			exp.sleep(initialSleep)
 			self.show()
 			collectPupilTrace(self, initialSleep)
-
 
 			start_time = exp.time()
 			round_dur = 750
