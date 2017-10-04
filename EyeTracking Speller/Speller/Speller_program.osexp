@@ -731,7 +731,7 @@ define inline_script itemArray
 			
 			return np.mean([item.likelihood() for item in self.items])
 			
-		def invert(self, dur=500):
+		def invert(self, dur=500, collectDur=1):
 			
 			"""
 			desc:
@@ -745,7 +745,8 @@ define inline_script itemArray
 			oldBrightness = np.array([item.brightness for item in self.items])
 			t0 = exp.time()
 			i = 0
-			while i < dur:			
+			while i < dur:
+				self.measure(collectDur)						
 				n = 0			
 				for item in self.items:
 					item.setBrightness(oldBrightness[n] * f[i])
@@ -809,7 +810,18 @@ define inline_script itemArray
 			if 'mirror' in mode2:
 				self.items[0].showMirror = True
 				self.items[1].showMirror = True
-				
+		
+		def measure(self, collectDur):
+			eyetracker.log('start_collection')
+			a = collectPupilTrace(self, collectDur)
+			meanPupilSize = np.median(a)
+			self.pupilSizeIndicator.setText(str(meanPupilSize))
+			eyetracker.log('end_collection')
+			for item in self.items:
+				item.setPupilSize(meanPupilSize)				
+
+
+
 		def selectionLoop(self, initialSleep=1000, invertSteps=500, adaptDur=1,
 			collectDur=1, target=None, mode2='180', likelihoodThr=2,
 			cue=None):
@@ -860,44 +872,13 @@ define inline_script itemArray
 				if current_dur >=round_dur:			
 					#Invert
 					eyetracker.log('start_invert')
-					#self.invert(self, dur=invertSteps)
-					dur = invertSteps
-					f = np.linspace(1, -1, dur)
-					oldBrightness = np.array([item.brightness for item in self.items])
-					t0 = exp.time()
-					i = 0
-					while i < dur:			
-						a = collectPupilTrace(self, collectDur)
-						meanPupilSize = np.median(a)
-						self.pupilSizeIndicator.setText(str(meanPupilSize))
-						n = 0			
-						for item in self.items:
-							item.setBrightness(oldBrightness[n] * f[i])
-							n += 1
-						print 'i = %s' % i
-						self.show()
-						t1 = exp.time()
-						i = int(t1-t0)
-					n = 0
-					for item in self.items:
-						item.setBrightness(oldBrightness[n] * f[-1])
-						n += 1
+					self.invert(invertSteps, collectDur)
 					eyetracker.log('end_invert')
 					current_dur = 0
 					start_time = exp.time()
 				else:
 					current_dur = exp.time()-start_time
-					
-				eyetracker.log('start_adaptation')
-				collectPupilTrace(self, adaptDur) # takes time
-				eyetracker.log('end_adaptation')
-				eyetracker.log('start_collection')
-				a = collectPupilTrace(self, collectDur) # takes time
-				eyetracker.log('end_collection')
-				meanPupilSize = np.median(a)
-				self.pupilSizeIndicator.setText(str(meanPupilSize))
-				for item in self.items:
-					item.setPupilSize(meanPupilSize)				
+				self.measure(collectDur)					
 				_items = []
 				prune = False
 				for item in self.items:
