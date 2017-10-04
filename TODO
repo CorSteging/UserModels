@@ -1,5 +1,5 @@
 //TODO
 
-* Write collectPupilTrace in selectionLoop
-* Call collectPupilTrace more often, inversion speed remains the same
-* Likelihood function based on derivative
+* Rewrite setPupilSize function such that it calculates the derivatives and assigns likelihoods
+* New likelihood function based on derivative
+* Call setPupilSize in invert function
