@@ -498,16 +498,23 @@ define inline_script item
 			self.mirror.pos = -x, -y
 			self.cue.setOri(np.degrees(-angle))
 
-		def calcLikelihood(self, pupilSizeChange, brightnessChange):
+		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray):
 			maxBrightness = 255
-			maxPupilSize = 10
+
+			#default
+			maxPupilSize = 700
+			minPupilSize = 300
+
+			if len(pupilSizeArray) > 200:
+				maxPupilSize = max(pupilSizeArray)
+				minPupilSize = min(pupilSizeArray)
 
 
 			#Brighter
-			if pupilSizeChange >= 0.75*maxPupilSize and brightnessChange >= 0.75*maxBrightness:
+			if pupilSizeChange >= 0.75*(maxPupilSize-minPupilSize) + minPupilSize and brightnessChange >= 0.75*maxBrightness:
 				likelihood = self.lLikelihood[-1] / pupilSizeChange
 			#Darker
-			elif pupilSizeChange <= 0.25*maxPupilSize and brightnessChange <= 0.25*maxBrightness:
+			elif pupilSizeChange <= 0.25*(maxPupilSize-minPupilSize) + minPupilSize and brightnessChange <= 0.25*maxBrightness:
 				likelihood = self.lLikelihood[-1] * pupilSizeChange
 			#NoChange
 			else:
@@ -541,7 +548,7 @@ define inline_script item
 			if len(pupilSizeArray) > 3:
 				pupilSizeChange = 1. * ((pupilSizeArray[-1] - pupilSizeArray[-3])/10)
 				brightnessChange = 1. * ((self.lPrediction[-1] - self.lPrediction[-3])/10)
-				self.calcLikelihood(pupilSizeChange, brightnessChange)
+				self.calcLikelihood(pupilSizeChange, brightnessChange, pupilSizeArray)
 
 		def setXY(self, xy):
 
