@@ -1,5 +1,4 @@
 //TODO
 
-* Rewrite setPupilSize function such that it calculates the derivatives and assigns likelihoods
-* New likelihood function based on derivative
-* Call setPupilSize in invert function
+* Calc likelihood based on the ideal pupilsize derivative (based on the ideal pupilsize curve)
+* Determine the ideal pupilsize curve (which is based on the current position in the 1250ms brightness cycle)
