@@ -498,6 +498,36 @@ define inline_script item
 			self.mirror.pos = -x, -y
 			self.cue.setOri(np.degrees(-angle))
 
+		def calcIdealBrightDerivative(self, pupilSizeChange, minPupilSize, maxPupilSize):
+			curve = self.calcIdealPupilSizeArray(minPupilSize, maxPupilSize)
+			#up or down?
+			up = True
+			if self.lPrediction[-1] < self.lPrediction[-2]:
+				up = False
+
+					
+			return 0
+
+		def calcIdealDarkDerivative(self, pupilSizeChange, minPupilSize, maxPupilSize):
+
+
+			
+			return 0
+
+		#Calculates an idealized pupilsize curve.
+		def calcIdealPupilSizeArray(self, minPupilSize, maxPupilSize):
+			amp = (maxPupilSize-minPupilSize)/2
+			freq = (1/2500)
+			phase = -minPupilSize
+			shift = (maxPupilSize+minPupilSize)/2
+
+			curve = []
+			for x in range(0, 2500):
+				if x%10==0:
+					curve.append(amp*math.sin(freq * (2*math.pi*x) -300) + shift)
+			return curve
+
+
 		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray):
 			maxBrightness = 255
 
@@ -505,11 +535,24 @@ define inline_script item
 			maxPupilSize = 700
 			minPupilSize = 300
 
-			if len(pupilSizeArray) > 200:
+			if len(pupilSizeArray) > 2000:
 				maxPupilSize = max(pupilSizeArray)
 				minPupilSize = min(pupilSizeArray)
 
+			idealBrightDerivative = self.calcIdealBrightDerivative(pupilSizeChange, minPupilSize, maxPupilSize)
+			idealDarkDerivative = self.calcIdealDarkDerivative(pupilSizeChange, minPupilSize, maxPupilSize)
 
+			if brightnessChange < 0:
+				likelihood = self.lLikelihood[-1] / pupilSizeChange
+			#Darker
+			elif brightnessChange > 0:
+				likelihood = self.lLikelihood[-1] * pupilSizeChange
+			#NoChange
+			else:
+				likelihood = self.lLikelihood[-1]
+			self.lLikelihood.append(likelihood)
+
+			"""
 			#Brighter
 			if pupilSizeChange >= 0.75*(maxPupilSize-minPupilSize) + minPupilSize and brightnessChange >= 0.75*maxBrightness:
 				likelihood = self.lLikelihood[-1] / pupilSizeChange
@@ -520,7 +563,7 @@ define inline_script item
 			else:
 				likelihood = self.lLikelihood[-1]
 			self.lLikelihood.append(likelihood)
-			
+			"""			
 			"""
 			if self.lPrediction[-1] == 1 and self.lPrediction[-2] == -1:
 				likelihood = self.lLikelihood[-1] / pupilSizeChange
@@ -1077,6 +1120,7 @@ define inline_script smoothing
 	set description "Executes Python code"
 	___run__
 	import numpy
+	import math
 
 	def smooth(x, window_len=11, window='hanning'):
 		"""
