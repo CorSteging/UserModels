@@ -498,6 +498,16 @@ define inline_script item
 			self.mirror.pos = -x, -y
 			self.cue.setOri(np.degrees(-angle))
 
+		def calcLikelihood(self, pupilSizeChange):
+			if self.lPrediction[-1] == 1 and self.lPrediction[-2] == -1:
+				likelihood = self.lLikelihood[-1] / pupilSizeChange
+			elif self.lPrediction[-1] == -1 and self.lPrediction[-2] == 1:
+				likelihood = self.lLikelihood[-1] * pupilSizeChange
+			else:
+				likelihood = self.lLikelihood[-1]
+			self.lLikelihood.append(likelihood)
+
+
 		def setPupilSize(self, pupilSizeArray):
 
 			"""
@@ -508,10 +518,14 @@ define inline_script item
 			arguments:
 				pupilSize:		A pupil-size value.
 			"""
+			self.lPrediction.append(self.brightness)
+			self.lPupilSize.append(pupilSizeArray[-1])
 
+			pupilSizeChange = 0.
 			if len(pupilSizeArray) > 3:
 					pupilSizeChange = 1. * ((pupilSizeArray[-1] - pupilSizeArray[-3])/10)
-			return pupilSizeChange
+
+			self.calcLikelihood(pupilSizeChange)
 
 		def setXY(self, xy):
 
@@ -804,14 +818,14 @@ define inline_script itemArray
 				self.items[0].showMirror = True
 				self.items[1].showMirror = True
 
-			def measure(self, collectDur):
-				eyetracker.log('start_collection')
-				a = collectPupilTrace(self, collectDur)
-				meanPupilSize = np.median(a)
-				self.pupilSizeArray.append(meanPupilSize)
-				self.pupilSizeIndicator.setText(str(meanPupilSize))
-				eyetracker.log('end_collection')
-				return meanPupilSize
+		def measure(self, collectDur):
+			eyetracker.log('start_collection')
+			a = collectPupilTrace(self, collectDur)
+			meanPupilSize = np.median(a)
+			self.pupilSizeArray.append(meanPupilSize)
+			self.pupilSizeIndicator.setText(str(meanPupilSize))
+			eyetracker.log('end_collection')
+			return meanPupilSize
 
 		def selectionLoop(self, initialSleep=1000, invertSteps=500, adaptDur=1,
 			collectDur=1, target=None, mode2='180', likelihoodThr=2,
@@ -870,7 +884,7 @@ define inline_script itemArray
 					current_dur = exp.time()-start_time
 				meanPupilSize = self.measure(collectDur)
 				for item in self.items:
-					item.setPupilSize(PupilSizeArray)
+					item.setPupilSize(self.pupilSizeArray)
 				_items = []
 				prune = False
 				for item in self.items:
