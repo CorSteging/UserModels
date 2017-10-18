@@ -589,15 +589,22 @@ define inline_script item
 			#dark = -1
 			#light = 1
 
+			likelihood = self.lLikelihood[-1]
 			#Brighter
-			if brightLikelihood > darkLikelihood and self.lPrediction[-1] > 0:
+			if pupilSizeChange>0  and self.lPrediction[-1] > 0: #brightLikelihood > darkLikelihood
 				likelihood = self.lLikelihood[-1] + changeConstant
 			#Darker
-			elif darkLikelihood > brightLikelihood and self.lPrediction[-1] < 0:
+			elif pupilSizeChange<0 and self.lPrediction[-1] < 0: # darkLikelihood > brightLikelihood
 				likelihood = self.lLikelihood[-1]  + changeConstant
 			#NoChange
 			else:
-				likelihood = self.lLikelihood[-1]
+				if self.lPrediction[-1]==1 and pupilSizeArray[-1]<(maxPupilSize-minPupilSize)/2:
+					likelihood = self.lLikelihood[-1] + changeConstant
+				elif self.lPrediction[-1]==-1 and pupilSizeArray[-1]>(maxPupilSize-minPupilSize)/2:
+					likelihood = self.lLikelihood[-1] + changeConstant
+				else:
+					likelihood = self.lLikelihood[-1]
+
 			self.lLikelihood.append(likelihood)
 
 
