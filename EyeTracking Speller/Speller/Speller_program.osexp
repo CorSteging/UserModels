@@ -516,6 +516,22 @@ define inline_script item
 
 		#Calculates an idealized pupilsize curve.
 		def calcIdealPupilSizeArray(self, minPupilSize, maxPupilSize):
+			curve = []
+			for x in range(0, 2500):
+				if x%10==0:
+					real_val = minPupilSize
+					if x >= 0 and x < 500:
+						real_val = maxPupilSize - ((maxPupilSize-minPupilSize)/500 * x)
+					if x >= 1250 and x < 1750:
+						real_val = minPupilSize + ((maxPupilSize-minPupilSize)/500 * (x-1250))
+					if x >=1750:
+						real_val = maxPupilSize
+
+					curve.append(real_val)
+			return curve
+
+		#Calculates an idealized pupilsize curve.
+		def calcIdealPupilSizeArray(self, minPupilSize, maxPupilSize):
 
 			amp = 340.438#(maxPupilSize-minPupilSize)/2
 			freq = (1/2500)
@@ -525,10 +541,10 @@ define inline_script item
 			curve = []
 			for x in range(0, 2500):
 				if x%10==0:
-					fun_val = amp*math.sin(freq * (2*math.pi*x) -300) + shift
+					fun_val = amp*math.sin(freq * (2*math.pi*x) -phase) + shift
 					real_val = max(min(maxPupilSize, fun_val), minPupilSize)
 					curve.append(real_val)
-
+			return curve
 
 		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray):
 			maxBrightness = 255
