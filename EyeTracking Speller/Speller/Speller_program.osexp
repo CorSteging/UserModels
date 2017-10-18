@@ -500,19 +500,40 @@ define inline_script item
 
 		def calcIdealBrightDerivative(self, pupilSizeChange, minPupilSize, maxPupilSize):
 			curve = self.calcIdealPupilSizeArray(minPupilSize, maxPupilSize)
-			#up or down?
-			up = True
-			if self.lPrediction[-1] < self.lPrediction[-2]:
-				up = False
+			target = self.lPrediction[-1]
+			point1 = 0
+			point2 = 0
 
-					
-			return 0
+			for i, ps in enumerate(curve):
+				if i <= 1250:
+					continue
+				if ps == target:
+					point1 = curve[ps] 
+					point2 = curve[ps-3] 
+			
+			idealBrightDerivative = 1. * (point1 - point2 /20)
+
+			return idealBrightDerivative
 
 		def calcIdealDarkDerivative(self, pupilSizeChange, minPupilSize, maxPupilSize):
+			curve = self.calcIdealPupilSizeArray(minPupilSize, maxPupilSize)
+			target = self.lPrediction[-1]
+			point1 = 0
+			point2 = 0
 
+			for i, ps in enumerate(curve):
+				if ps == target:
+					point1 = curve[ps] 
+					if i < 2:
+						point2 = maxPupilSize
+					else:
+						point2 = curve[ps-3] 
+				if i > 1250:
+					continue
 
-			
-			return 0
+			idealDarkDerivative = 1. * (point1 - point2 /20)
+		
+			return idealDarkDerivative
 
 		#Calculates an idealized pupilsize curve.
 		def calcIdealPupilSizeArray(self, minPupilSize, maxPupilSize):
@@ -547,35 +568,44 @@ define inline_script item
 			return curve
 
 		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray):
-			maxBrightness = 255
+
+			changeConstant = 0.05
 
 			#default
 			maxPupilSize = 700
 			minPupilSize = 300
 
-			if len(pupilSizeArray) > 2000:
-				maxPupilSize = max(pupilSizeArray)
-				minPupilSize = min(pupilSizeArray)
+			#After ten seconds, adapt it to the users eyes
+			if len(pupilSizeArray) > 20000:
+				maxPupilSize = (maxPupilSize + max(pupilSizeArray))/2
+				minPupilSize = (minPupilSize + min(pupilSizeArray))/2
 
 			idealBrightDerivative = self.calcIdealBrightDerivative(pupilSizeChange, minPupilSize, maxPupilSize)
 			idealDarkDerivative = self.calcIdealDarkDerivative(pupilSizeChange, minPupilSize, maxPupilSize)
 
-			if brightnessChange < 0:
-				likelihood = self.lLikelihood[-1] / pupilSizeChange
+			brightLikelihood = abs(pupilSizeChange - idealBrightDerivative)
+			darkLikelihood = abs(pupilSizeChange - idealDarkDerivative)
+
+			#dark = -1
+			#light = 1
+
+			#Brighter
+			if brightLikelihood > darkLikelihood and self.lPrediction[-1] > 0:
+				likelihood = self.lLikelihood[-1] + changeConstant
 			#Darker
-			elif brightnessChange > 0:
-				likelihood = self.lLikelihood[-1] * pupilSizeChange
+			elif darkLikelihood > brightLikelihood and self.lPrediction[-1] < 0:
+				likelihood = self.lLikelihood[-1]  + changeConstant
 			#NoChange
 			else:
 				likelihood = self.lLikelihood[-1]
 			self.lLikelihood.append(likelihood)
 
+
 			"""
-			#Brighter
-			if pupilSizeChange >= 0.75*(maxPupilSize-minPupilSize) + minPupilSize and brightnessChange >= 0.75*maxBrightness:
+			if brightnessChange < 0:
 				likelihood = self.lLikelihood[-1] / pupilSizeChange
 			#Darker
-			elif pupilSizeChange <= 0.25*(maxPupilSize-minPupilSize) + minPupilSize and brightnessChange <= 0.25*maxBrightness:
+			elif brightnessChange > 0:
 				likelihood = self.lLikelihood[-1] * pupilSizeChange
 			#NoChange
 			else:
@@ -607,8 +637,8 @@ define inline_script item
 			self.lPupilSize.append(pupilSizeArray[-1])
 
 			if len(pupilSizeArray) > 3:
-				pupilSizeChange = 1. * ((pupilSizeArray[-1] - pupilSizeArray[-3])/10)
-				brightnessChange = 1. * ((self.lPrediction[-1] - self.lPrediction[-3])/10)
+				pupilSizeChange = 1. * ((pupilSizeArray[-1] - pupilSizeArray[-3])/20)
+				brightnessChange = 1. * ((self.lPrediction[-1] - self.lPrediction[-3])/20)
 				self.calcLikelihood(pupilSizeChange, brightnessChange, pupilSizeArray)
 
 		def setXY(self, xy):
