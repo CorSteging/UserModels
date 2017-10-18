@@ -516,16 +516,18 @@ define inline_script item
 
 		#Calculates an idealized pupilsize curve.
 		def calcIdealPupilSizeArray(self, minPupilSize, maxPupilSize):
-			amp = (maxPupilSize-minPupilSize)/2
+
+			amp = 340.438#(maxPupilSize-minPupilSize)/2
 			freq = (1/2500)
-			phase = -minPupilSize
+			phase = 299.08#-minPupilSize
 			shift = (maxPupilSize+minPupilSize)/2
 
 			curve = []
 			for x in range(0, 2500):
 				if x%10==0:
-					curve.append(amp*math.sin(freq * (2*math.pi*x) -300) + shift)
-			return curve
+					fun_val = amp*math.sin(freq * (2*math.pi*x) -300) + shift
+					real_val = max(min(maxPupilSize, fun_val), minPupilSize)
+					curve.append(real_val)
 
 
 		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray):
