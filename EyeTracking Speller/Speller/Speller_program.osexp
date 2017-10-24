@@ -567,7 +567,7 @@ define inline_script item
 					curve.append(real_val)
 			return curve
 
-		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray):
+		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray, completePupilSizeArray):
 
 			changeConstant = 0.05
 
@@ -575,32 +575,27 @@ define inline_script item
 			maxPupilSize = 700
 			minPupilSize = 300
 
-			#After ten seconds, adapt it to the users eyes
-			if len(pupilSizeArray) > 20000:
-				maxPupilSize = (maxPupilSize + max(pupilSizeArray))/2
-				minPupilSize = (minPupilSize + min(pupilSizeArray))/2
+			#After five seconds, adapt it to the users eyes
+			if len(completePupilSizeArray) > 500:
+				maxPupilSize = (maxPupilSize + max(completePupilSizeArray))/2
+				minPupilSize = (minPupilSize + min(completePupilSizeArray))/2
 
-			idealBrightDerivative = self.calcIdealBrightDerivative(pupilSizeChange, minPupilSize, maxPupilSize)
-			idealDarkDerivative = self.calcIdealDarkDerivative(pupilSizeChange, minPupilSize, maxPupilSize)
-
-			brightLikelihood = abs(pupilSizeChange - idealBrightDerivative)
-			darkLikelihood = abs(pupilSizeChange - idealDarkDerivative)
 
 			#dark = -1
 			#light = 1
 
 			likelihood = self.lLikelihood[-1]
 			#Brighter
-			if pupilSizeChange>0  and self.lPrediction[-1] > 0: #brightLikelihood > darkLikelihood
+			if pupilSizeChange>0  and (self.lPrediction[-1] > 0 or self.lPrediction[-1] > self.lPrediction[-2]): #brightLikelihood > darkLikelihood
 				likelihood = self.lLikelihood[-1] + changeConstant
 			#Darker
-			elif pupilSizeChange<0 and self.lPrediction[-1] < 0: # darkLikelihood > brightLikelihood
+			elif pupilSizeChange<0 and (self.lPrediction[-1] < 0 or self.lPrediction[-1] < self.lPrediction[-2]): # darkLikelihood > brightLikelihood
 				likelihood = self.lLikelihood[-1]  + changeConstant
 			#NoChange
 			else:
-				if self.lPrediction[-1]==1 and pupilSizeArray[-1]<(maxPupilSize-minPupilSize)/2:
+				if self.lPrediction[-1]==1 and pupilSizeArray[-1] < minPupilSize + (maxPupilSize-minPupilSize)*0.25:
 					likelihood = self.lLikelihood[-1] + changeConstant
-				elif self.lPrediction[-1]==-1 and pupilSizeArray[-1]>(maxPupilSize-minPupilSize)/2:
+				elif self.lPrediction[-1]==-1 and pupilSizeArray[-1] > minPupilSize + (maxPupilSize-minPupilSize)*0.75:
 					likelihood = self.lLikelihood[-1] + changeConstant
 				else:
 					likelihood = self.lLikelihood[-1]
@@ -630,7 +625,7 @@ define inline_script item
 			"""
 
 
-		def setPupilSize(self, pupilSizeArray):
+		def setPupilSize(self, pupilSizeArray, completePupilSizeArray):
 
 			"""
 			desc:
@@ -644,9 +639,9 @@ define inline_script item
 			self.lPupilSize.append(pupilSizeArray[-1])
 
 			if len(pupilSizeArray) > 3:
-				pupilSizeChange = 1. * ((pupilSizeArray[-1] - pupilSizeArray[-3])/20)
+				pupilSizeChange = 1. * ((pupilSizeArray[-1] - pupilSizeArray[-3])/20) # divide by 20, to get an over the last 20 ms period
 				brightnessChange = 1. * ((self.lPrediction[-1] - self.lPrediction[-3])/20)
-				self.calcLikelihood(pupilSizeChange, brightnessChange, pupilSizeArray)
+				self.calcLikelihood(pupilSizeChange, brightnessChange, pupilSizeArray, completePupilSizeArray)
 
 		def setXY(self, xy):
 
@@ -785,6 +780,7 @@ define inline_script itemArray
 			self.size = size
 			self.debug = debug
 			self.pupilSizeArray = []
+			self.completePupilSizeArray = []
 			brightness = random.choice([1,-1])
 			if len(itemIds) == 4:
 				angle = -.25*np.pi
@@ -944,6 +940,7 @@ define inline_script itemArray
 			a = collectPupilTrace(self, collectDur)
 			meanPupilSize = np.median(a)
 			self.pupilSizeArray.append(meanPupilSize)
+			self.completePupilSizeArray.append(meanPupilSize)
 			self.pupilSizeIndicator.setText(str(meanPupilSize))
 			eyetracker.log('end_collection')
 			return meanPupilSize
@@ -1005,7 +1002,7 @@ define inline_script itemArray
 					current_dur = exp.time()-start_time
 				meanPupilSize = self.measure(collectDur)
 				for item in self.items:
-					item.setPupilSize(self.pupilSizeArray)
+					item.setPupilSize(self.pupilSizeArray, self.completePupilSizeArray)
 				_items = []
 				prune = False
 				for item in self.items:
@@ -1027,6 +1024,8 @@ define inline_script itemArray
 						for item in self.items:
 							item.setBrightness(brightness)
 							brightness *= -1
+							item.lLikelihood = [1]
+						self.pupilSizeArray = []
 				else:
 					eyetracker.log('prune no')
 				eyetracker.log('end_round')
