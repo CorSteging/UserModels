@@ -569,16 +569,24 @@ define inline_script item
 
 		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray, completePupilSizeArray):
 
-			changeConstant = 0.05
+			changeConstant = 0.01*len(pupilSizeArray)/100
+			
+			if len(pupilSizeArray) > 100:
+				changeConstant = 0.02*len(pupilSizeArray)/100
+			if len(pupilSizeArray) > 500:
+				changeConstant = 0.03*len(pupilSizeArray)/100
+			
 
 			#default
-			maxPupilSize = 700
-			minPupilSize = 300
+			maxPupilSize = 3500
+			minPupilSize = 2000
 
 			#After five seconds, adapt it to the users eyes
 			if len(completePupilSizeArray) > 500:
-				maxPupilSize = (maxPupilSize + max(completePupilSizeArray))/2
-				minPupilSize = (minPupilSize + min(completePupilSizeArray))/2
+				#maxPupilSize = min(maxPupilSize,(maxPupilSize + max(completePupilSizeArray[-499:]))/2)
+				#minPupilSize = max(minPupilSize,(minPupilSize + min(completePupilSizeArray[-499:]))/2)
+				maxPupilSize = min(maxPupilSize+1000,(maxPupilSize + max(completePupilSizeArray))/2)
+				minPupilSize = max(minPupilSize-1000,(minPupilSize + min(completePupilSizeArray))/2)
 
 
 			#dark = -1
@@ -586,19 +594,35 @@ define inline_script item
 
 			likelihood = self.lLikelihood[-1]
 			#Brighter
-			if pupilSizeChange>0  and (self.lPrediction[-1] > 0 or self.lPrediction[-1] > self.lPrediction[-2]): #brightLikelihood > darkLikelihood
+			if pupilSizeChange<-0.5  and (self.lPrediction[-1] > 0 or self.lPrediction[-1] > self.lPrediction[-2]): #brightLikelihood > darkLikelihood
 				likelihood = self.lLikelihood[-1] + changeConstant
 			#Darker
-			elif pupilSizeChange<0 and (self.lPrediction[-1] < 0 or self.lPrediction[-1] < self.lPrediction[-2]): # darkLikelihood > brightLikelihood
+			elif pupilSizeChange>0.5 and (self.lPrediction[-1] < 0 or self.lPrediction[-1] < self.lPrediction[-2]): # darkLikelihood > brightLikelihood
 				likelihood = self.lLikelihood[-1]  + changeConstant
 			#NoChange
 			else:
-				if self.lPrediction[-1]==1 and pupilSizeArray[-1] < minPupilSize + (maxPupilSize-minPupilSize)*0.25:
+				if self.lPrediction[-1]==1 and pupilSizeArray[-1] < minPupilSize + (maxPupilSize-minPupilSize)/2:
 					likelihood = self.lLikelihood[-1] + changeConstant
-				elif self.lPrediction[-1]==-1 and pupilSizeArray[-1] > minPupilSize + (maxPupilSize-minPupilSize)*0.75:
+				elif self.lPrediction[-1]==-1 and pupilSizeArray[-1] > minPupilSize + (maxPupilSize-minPupilSize)/2:
 					likelihood = self.lLikelihood[-1] + changeConstant
 				else:
 					likelihood = self.lLikelihood[-1]
+			delay = 4 # pupil response delay, between 8 and 35 ms (3=30 ms)
+			if len(self.lPrediction)>delay:
+				#Brighter
+				if pupilSizeChange<-0.5  and (self.lPrediction[-delay] > 0 or self.lPrediction[-delay] > self.lPrediction[-delay-1]): #brightLikelihood > darkLikelihood
+					likelihood = self.lLikelihood[-1] + changeConstant
+				#Darker
+				elif pupilSizeChange>0.5 and (self.lPrediction[-delay] < 0 or self.lPrediction[-delay] < self.lPrediction[-delay-1]): # darkLikelihood > brightLikelihood
+					likelihood = self.lLikelihood[-1]  + changeConstant
+				#NoChange
+				else:
+					if self.lPrediction[-delay]==1 and pupilSizeArray[-1] < minPupilSize + (maxPupilSize-minPupilSize)/2:
+						likelihood = self.lLikelihood[-1] + changeConstant
+					elif self.lPrediction[-delay]==-1 and pupilSizeArray[-1] > minPupilSize + (maxPupilSize-minPupilSize)/2:
+						likelihood = self.lLikelihood[-1] + changeConstant
+					else:
+						likelihood = self.lLikelihood[-1]
 
 			self.lLikelihood.append(likelihood)
 
@@ -640,6 +664,8 @@ define inline_script item
 
 			if len(pupilSizeArray) > 3:
 				pupilSizeChange = 1. * ((pupilSizeArray[-1] - pupilSizeArray[-3])/20) # divide by 20, to get an over the last 20 ms period
+				if pupilSizeArray[-1]<1000 or pupilSizeArray[-3]<1000:
+					pupilSizeChange = 0
 				brightnessChange = 1. * ((self.lPrediction[-1] - self.lPrediction[-3])/20)
 				self.calcLikelihood(pupilSizeChange, brightnessChange, pupilSizeArray, completePupilSizeArray)
 
@@ -940,6 +966,7 @@ define inline_script itemArray
 			a = collectPupilTrace(self, collectDur)
 			meanPupilSize = np.median(a)
 			self.pupilSizeArray.append(meanPupilSize)
+			
 			self.completePupilSizeArray.append(meanPupilSize)
 			self.pupilSizeIndicator.setText(str(meanPupilSize))
 			eyetracker.log('end_collection')
@@ -987,9 +1014,16 @@ define inline_script itemArray
 			collectPupilTrace(self, initialSleep)
 
 			start_time = exp.time()
-			round_dur = 750
+			first_time = exp.time()
+			round_dur = 1250
 			current_dur = 0
 			while True:
+				if exp.time()-first_time > 30000:
+					if target != None:
+						hit = False
+						if not hit:
+							break
+					
 				eyetracker.log('start_round %d' % rounds)
 				if current_dur >=round_dur:
 					#Invert
@@ -1026,6 +1060,7 @@ define inline_script itemArray
 							brightness *= -1
 							item.lLikelihood = [1]
 						self.pupilSizeArray = []
+						first_time = exp.time()
 				else:
 					eyetracker.log('prune no')
 				eyetracker.log('end_round')
