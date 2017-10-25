@@ -43,7 +43,7 @@ define notepad README
 	__note__
 	This experiment implements a pupillometry-based human-computer interface, as
 	described in:
-
+		
 		Mathôt, Melmi, van der Linden, & Van der Stigchel (2016). A human-computer
 		interface based on decoding of covert visual attention through pupillometry.
 		PLoS ONE.
@@ -134,26 +134,26 @@ define inline_script eye_tracker
 		pylink = None
 	else:
 		import pylink
-
-	def collectPupilTrace(itemArray, dur, fd=1):
-
+	
+	def collectPupilTrace(itemArray, dur, fd=10):
+		
 		"""
 		desc:
 			Returns an array of recorded pupil-size values.
-
+			
 		arguments:
 			itemArray:		An ItemArray object.
 			dur:			The recording duration.
 			fd:				The frame duration in milliseconds.
-
+			
 		returns:
 			A numpy array that with a dur/fd length.
 		"""
-
+		
 		t0 = self.time()
 		a = np.zeros(dur/fd)
 		_dt = 0
-		while _dt < dur:
+		while _dt < dur:		
 			itemArray.show()
 			if pylink != None:
 				ps = eyetracker.pupil_size()
@@ -179,7 +179,7 @@ define feedback final_feedback
 	set reset_variables yes
 	set duration 0
 	set description "Provides feedback to the participant"
-	draw textline center=1 color=green font_bold=no font_family=sans font_italic=no font_size=32 html=yes show_if=always text="<b>End of block</b><br /><br />Accuracy: [acc] %<br />Average selection time: [avg_rt] s<br /><br />Please call the experimenter" x=0 y=0 z_index=0
+	draw textline center=1 color=green font_bold=no font_family=sans font_italic=no font_size=32 html=yes show_if=always text="<b>End of the block</b><br /><br />Accuracy: [acc] %<br />Average response time: [avg_rt] s<br /><br />Please call the experimenter" x=0 y=0 z_index=0
 	draw textline center=1 color=green font_bold=no font_family=sans font_italic=no font_size=18 html=yes show_if=always text="Press 'q' to stop." x=0 y=448 z_index=0
 
 define form_base form_base
@@ -291,18 +291,18 @@ define inline_script get_input
 	set description "Executes Python code"
 	___run__
 	def getInput(writingIndicator=None):
-
+		
 		"""
 		desc:
 			Gets a single input character.
-
+			
 		keywords:
 			writingIndicator:	See ItemArray.
-
+			
 		returns:
 			An input character
 		"""
-
+	
 		exp.pygaze_eyetracker.log('start_get_input')
 		items = {
 			'ABCD'			: ['B', 'A', 'D', 'C'],
@@ -327,7 +327,7 @@ define inline_script get_input
 		if self.get('stabilize') != 'no':
 			stabilize = True
 		else:
-			stabilize = False
+			stabilize = False		
 		if self.get('checkFix') != 'no':
 			checkFix = True
 		else:
@@ -375,7 +375,7 @@ define inline_script globals
 	import os
 	from psychopy.visual import TextStim, GratingStim, ImageStim
 	import subprocess
-
+	
 	my_keyboard = keyboard(timeout=0)
 	my_mouse = mouse()
 	xc = var.width/2
@@ -387,42 +387,42 @@ define inline_script item
 	set description "Class definition"
 	___run__
 	class Item(object):
-
+		
 		"""
 		desc:
 			A single selectable item.
 		"""
-
+		
 		def __init__(self, itemArray, itemId, angle, ecc, opacity=.5, color='green',
 			size=64, brightness=1, mirror=False, bgScale=2):
-
+				
 			"""
 			desc:
 				constructor.
-
+				
 			arguments:
 				itemArray:		An ItemArray object.
 				itemId:			A string that is shown and identifies the item.
-				angle:
+				angle:			
 								The angular position of the item. This is in radians
 								counterclockwise, starting from a 3 o'clock
 								position.
 				ecc:			The eccentricity of the item.
-
+			
 			keywords:
 				opacity:		The opacity of the item-id string.
 				color:			The color of the item-id string.
-				size:
+				size:			
 								The size of the item, which corresponds to the
 								height of the item-id string and the radius of the
 								background patch.
-				brightness:		The brightness of the background patch.
+				brightness:		The brightness of the background patch.			
 				mirror:			Indicates whether a 'mirror' background patch
 								should be shown as well.
 				bgScale:		The size of the background relative to the
 								items.
 			"""
-
+			
 			self.itemArray = itemArray
 			self.itemId = itemId
 			self.opacity = .5
@@ -437,58 +437,58 @@ define inline_script item
 				color=self.brightness, size=size*bgScale)
 			self.showMirror = mirror
 			self.mirror = GratingStim(win, tex=None, mask='raisedCos',
-				color=self.brightness, size=size*bgScale)
+				color=self.brightness, size=size*bgScale)		
 			path = os.path.join(exp.experiment_path, '__pool__', '%s.png' % itemId)
 			if os.path.exists(path):
-				self.stim = ImageStim(win, path, opacity=self.opacity)
+				self.stim = ImageStim(win, path, opacity=self.opacity)		
 			else:
 				self.stim = TextStim(win, itemId, opacity=self.opacity,
-					color=self.color, height=size)
+					color=self.color, height=size)		
 			self.cue = GratingStim(win, tex=None, mask=None, color='green',
 				size=(128,2))
 			self.lPrediction = []
 			self.lPupilSize = []
 			self.setAngle(angle)
-
+										
 		def likelihood(self):
-
+			
 			"""
 			desc:
 				Determines the most recent likelihood estimate that this item is
 				selected.
-
+				
 			returns:
 				A likelihood value.
 			"""
-
+			
 			if np.isnan(self.lLikelihood[-1]):
 				return 1
 			return self.lLikelihood[-1]
-
+			
 		def setBrightness(self, brightness):
-
+			
 			"""
 			desc:
 				Sets the brightness of the background patch.
-
+				
 			arguments:
 				brightness:		A brightness value.
 			"""
-
+			
 			self.background.setColor(brightness)
 			self.brightness = brightness
 			self.mirror.setColor(brightness)
-
+			
 		def setAngle(self, angle):
-
+			
 			"""
 			desc:
 				Sets the angle of the item.
-
+				
 			arguments:
 				angle:		The new angle.
 			"""
-
+			
 			self.angle = angle
 			x = self.ecc * np.cos(angle)
 			y = self.ecc * np.sin(angle)
@@ -497,199 +497,51 @@ define inline_script item
 			self.background.pos = self.xy
 			self.mirror.pos = -x, -y
 			self.cue.setOri(np.degrees(-angle))
-
-		def calcIdealBrightDerivative(self, pupilSizeChange, minPupilSize, maxPupilSize):
-			curve = self.calcIdealPupilSizeArray(minPupilSize, maxPupilSize)
-			target = self.lPrediction[-1]
-			point1 = 0
-			point2 = 0
-
-			for i, ps in enumerate(curve):
-				if i <= 1250:
-					continue
-				if ps == target:
-					point1 = curve[ps] 
-					point2 = curve[ps-3] 
 			
-			idealBrightDerivative = 1. * (point1 - point2 /20)
-
-			return idealBrightDerivative
-
-		def calcIdealDarkDerivative(self, pupilSizeChange, minPupilSize, maxPupilSize):
-			curve = self.calcIdealPupilSizeArray(minPupilSize, maxPupilSize)
-			target = self.lPrediction[-1]
-			point1 = 0
-			point2 = 0
-
-			for i, ps in enumerate(curve):
-				if ps == target:
-					point1 = curve[ps] 
-					if i < 2:
-						point2 = maxPupilSize
-					else:
-						point2 = curve[ps-3] 
-				if i > 1250:
-					continue
-
-			idealDarkDerivative = 1. * (point1 - point2 /20)
-		
-			return idealDarkDerivative
-
-		#Calculates an idealized pupilsize curve.
-		def calcIdealPupilSizeArray(self, minPupilSize, maxPupilSize):
-			curve = []
-			for x in range(0, 2500):
-				if x%10==0:
-					real_val = minPupilSize
-					if x >= 0 and x < 500:
-						real_val = maxPupilSize - ((maxPupilSize-minPupilSize)/500 * x)
-					if x >= 1250 and x < 1750:
-						real_val = minPupilSize + ((maxPupilSize-minPupilSize)/500 * (x-1250))
-					if x >=1750:
-						real_val = maxPupilSize
-
-					curve.append(real_val)
-			return curve
-
-		#Calculates an idealized pupilsize curve.
-		def calcIdealPupilSizeArray(self, minPupilSize, maxPupilSize):
-
-			amp = 340.438#(maxPupilSize-minPupilSize)/2
-			freq = (1/2500)
-			phase = 299.08#-minPupilSize
-			shift = (maxPupilSize+minPupilSize)/2
-
-			curve = []
-			for x in range(0, 2500):
-				if x%10==0:
-					fun_val = amp*math.sin(freq * (2*math.pi*x) -phase) + shift
-					real_val = max(min(maxPupilSize, fun_val), minPupilSize)
-					curve.append(real_val)
-			return curve
-
-		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray, completePupilSizeArray):
-
-			changeConstant = 0.01*len(pupilSizeArray)/100
+		def setPupilSize(self, pupilSize):
 			
-			if len(pupilSizeArray) > 100:
-				changeConstant = 0.02*len(pupilSizeArray)/100
-			if len(pupilSizeArray) > 500:
-				changeConstant = 0.03*len(pupilSizeArray)/100
-			
-
-			#default
-			maxPupilSize = 3500
-			minPupilSize = 2000
-
-			#After five seconds, adapt it to the users eyes
-			if len(completePupilSizeArray) > 500:
-				#maxPupilSize = min(maxPupilSize,(maxPupilSize + max(completePupilSizeArray[-499:]))/2)
-				#minPupilSize = max(minPupilSize,(minPupilSize + min(completePupilSizeArray[-499:]))/2)
-				maxPupilSize = min(maxPupilSize+1000,(maxPupilSize + max(completePupilSizeArray))/2)
-				minPupilSize = max(minPupilSize-1000,(minPupilSize + min(completePupilSizeArray))/2)
-
-
-			#dark = -1
-			#light = 1
-
-			likelihood = self.lLikelihood[-1]
-			#Brighter
-			if pupilSizeChange<-0.5  and (self.lPrediction[-1] > 0 or self.lPrediction[-1] > self.lPrediction[-2]): #brightLikelihood > darkLikelihood
-				likelihood = self.lLikelihood[-1] + changeConstant
-			#Darker
-			elif pupilSizeChange>0.5 and (self.lPrediction[-1] < 0 or self.lPrediction[-1] < self.lPrediction[-2]): # darkLikelihood > brightLikelihood
-				likelihood = self.lLikelihood[-1]  + changeConstant
-			#NoChange
-			else:
-				if self.lPrediction[-1]==1 and pupilSizeArray[-1] < minPupilSize + (maxPupilSize-minPupilSize)/2:
-					likelihood = self.lLikelihood[-1] + changeConstant
-				elif self.lPrediction[-1]==-1 and pupilSizeArray[-1] > minPupilSize + (maxPupilSize-minPupilSize)/2:
-					likelihood = self.lLikelihood[-1] + changeConstant
-				else:
-					likelihood = self.lLikelihood[-1]
-			delay = 4 # pupil response delay, between 8 and 35 ms (3=30 ms)
-			if len(self.lPrediction)>delay:
-				#Brighter
-				if pupilSizeChange<-0.5  and (self.lPrediction[-delay] > 0 or self.lPrediction[-delay] > self.lPrediction[-delay-1]): #brightLikelihood > darkLikelihood
-					likelihood = self.lLikelihood[-1] + changeConstant
-				#Darker
-				elif pupilSizeChange>0.5 and (self.lPrediction[-delay] < 0 or self.lPrediction[-delay] < self.lPrediction[-delay-1]): # darkLikelihood > brightLikelihood
-					likelihood = self.lLikelihood[-1]  + changeConstant
-				#NoChange
-				else:
-					if self.lPrediction[-delay]==1 and pupilSizeArray[-1] < minPupilSize + (maxPupilSize-minPupilSize)/2:
-						likelihood = self.lLikelihood[-1] + changeConstant
-					elif self.lPrediction[-delay]==-1 and pupilSizeArray[-1] > minPupilSize + (maxPupilSize-minPupilSize)/2:
-						likelihood = self.lLikelihood[-1] + changeConstant
-					else:
-						likelihood = self.lLikelihood[-1]
-
-			self.lLikelihood.append(likelihood)
-
-
-			"""
-			if brightnessChange < 0:
-				likelihood = self.lLikelihood[-1] / pupilSizeChange
-			#Darker
-			elif brightnessChange > 0:
-				likelihood = self.lLikelihood[-1] * pupilSizeChange
-			#NoChange
-			else:
-				likelihood = self.lLikelihood[-1]
-			self.lLikelihood.append(likelihood)
-			"""			
-			"""
-			if self.lPrediction[-1] == 1 and self.lPrediction[-2] == -1:
-				likelihood = self.lLikelihood[-1] / pupilSizeChange
-			elif self.lPrediction[-1] == -1 and self.lPrediction[-2] == 1:
-				likelihood = self.lLikelihood[-1] * pupilSizeChange
-			else:
-				likelihood = self.lLikelihood[-1]
-			self.lLikelihood.append(likelihood)
-			"""
-
-
-		def setPupilSize(self, pupilSizeArray, completePupilSizeArray):
-
 			"""
 			desc:
 				Sets the most recently recorded pupil size, and estimate a new
 				likelihood value.
-
+				
 			arguments:
 				pupilSize:		A pupil-size value.
 			"""
+			
 			self.lPrediction.append(self.brightness)
-			self.lPupilSize.append(pupilSizeArray[-1])
-
-			if len(pupilSizeArray) > 3:
-				pupilSizeChange = 1. * ((pupilSizeArray[-1] - pupilSizeArray[-3])/20) # divide by 20, to get an over the last 20 ms period
-				if pupilSizeArray[-1]<1000 or pupilSizeArray[-3]<1000:
-					pupilSizeChange = 0
-				brightnessChange = 1. * ((self.lPrediction[-1] - self.lPrediction[-3])/20)
-				self.calcLikelihood(pupilSizeChange, brightnessChange, pupilSizeArray, completePupilSizeArray)
-
+			self.lPupilSize.append(pupilSize)
+			if len(self.lPupilSize) > 1:
+				pupilSizeChange = 1. * self.lPupilSize[-1] / self.lPupilSize[-2]
+				if self.lPrediction[-1] == 1 and self.lPrediction[-2] == -1:
+					likelihood = self.lLikelihood[-1] / pupilSizeChange
+				elif self.lPrediction[-1] == -1 and self.lPrediction[-2] == 1:
+					likelihood = self.lLikelihood[-1] * pupilSizeChange
+				else:
+					likelihood = self.lLikelihood[-1]
+				self.lLikelihood.append(likelihood)
+				
 		def setXY(self, xy):
-
+			
 			"""
 			desc:
 				Sets the position of the item.
-
+				
 			arguments:
 				xy:		An xy coordinate tuple.
 			"""
-
+			
 			self.xy = xy
 			self.stim.pos = xy
 			self.background.pos = xy
 			self.mirror.pos = -xy[0], -xy[1]
-
+			
 		def show(self, background=True, gazePos=None, cue=False):
-
+			
 			"""
 			desc:
 				Shows the item.
-
+				
 			keywords:
 				background:		Indicates whether background patch should be shown
 								as well.
@@ -697,7 +549,7 @@ define inline_script item
 								used to perform retinal stabilization.
 				cue:			Indicates whether a cue should be shown.
 			"""
-
+	
 			if gazePos != None:
 				gx, gy = gazePos
 				gx -= xc
@@ -723,37 +575,37 @@ define inline_script item
 				except:
 					pass
 			self.stim.draw()
-
+			
 		def focus(self, steps=50):
-
+			
 			"""
 			desc:
 				Moves the item to the display center, indicating that it has been
 				selected.
-
+				
 			keywords:
 				steps:		The number of steps of the animation.
 			"""
-
+			
 			x = np.linspace(self.xy[0], 0, steps)
-			y = np.linspace(self.xy[1], 0, steps)
+			y = np.linspace(self.xy[1], 0, steps)		
 			for i in range(steps):
 				self.background.pos = x[i],y[i]
 				self.stim.pos = x[i],y[i]
 				self.mirror.pos = -x[i],-y[i]
 				self.show()
 				win.flip()
-
+				
 		def log(self, status='normal'):
-
+			
 			"""
 			desc:
 				Logs the item information.
-
+				
 			keywords:
 				status:		The status of the item.
 			"""
-
+					
 			exp.pygaze_eyetracker.log((u'item id="%s" status=%s likelihood=%s ecc=%s angle=%s '
 				u'size=%s brightness=%s color=%s opacity=%s x=%s y=%s') % (
 				self.itemId, status, self.likelihood(), self.ecc, self.angle,
@@ -766,23 +618,23 @@ define inline_script itemArray
 	set description "Class definition"
 	___run__
 	class ItemArray(object):
-
+		
 		"""
 		desc:
 			An array of selectable items.
 		"""
-
+		
 		def __init__(self, itemIds, stabilize=False, check=True, ecc=310, size=64,
 			debug=True, bgScale=2, writingIndicator=None):
-
+			
 			"""
 			desc:
 				Constructor.
-
+				
 			arguments:
 				itemIds:	A list of item-id strings. There should be an even
 							number of elements.
-
+			
 			keywords:
 				stabilize:	Indicates whether retinal stabilization should be
 							enabled.
@@ -796,30 +648,28 @@ define inline_script itemArray
 							Indicates whether an indicator of the free-written
 							text should be shown.
 			"""
-
+			
 			if len(itemIds) not in [2, 4, 8, 16, 32]:
 				raise Exception('Expecting a power-of-two number of item IDs')
 			self.items = []
 			self.stabilize = stabilize
 			self.check = check
 			self.ecc = ecc
-			self.size = size
+			self.size = size		
 			self.debug = debug
-			self.pupilSizeArray = []
-			self.completePupilSizeArray = []
 			brightness = random.choice([1,-1])
 			if len(itemIds) == 4:
 				angle = -.25*np.pi
 			else:
 				angle = 0
-			for itemId in itemIds:
+			for itemId in itemIds:			
 				self.items.append(Item(self, itemId=itemId, angle=angle,
 					ecc=ecc, brightness=brightness, size=size, bgScale=bgScale))
 				brightness *= -1
 				angle += 2*np.pi/len(itemIds)
 			self.fixDot = GratingStim(win, tex=None, mask='circle', color='green',
 				size=8)
-			self.pupilSizeIndicator = TextStim(win, '-', pos=(xc/2, yc/2),
+			self.pupilSizeIndicator = TextStim(win, '-', pos=(xc-50, yc-20),
 				color='black')
 			if writingIndicator not in [None, '']:
 				self.writingIndicator = TextStim(win, '"%s"' % writingIndicator,
@@ -827,23 +677,23 @@ define inline_script itemArray
 			else:
 				self.writingIndicator = None
 			self.pause = TextStim(win, 'Fixation lost')
-
+				
 		def show(self, background=True, cue=None):
-
+			
 			"""
 			desc:
 				Shows the ItemArray.
-
+				
 			keywords:
 				background:		Indicates whether the backgrounds of the items
 								should be shown as well.
 				cue:			Indicates the item that should be cued, or None.
 			"""
-
+					
 			if self.check:
 				nErr = 0
 				while True:
-					gx, gy = eyetracker.sample()
+					gx, gy = eyetracker.sample()				
 					gx -= xc
 					gy -= yc
 					err = np.sqrt(gx**2+gy**2)
@@ -854,12 +704,12 @@ define inline_script itemArray
 						eyetracker.log('pause fixation_lost')
 						self.pause.draw()
 						win.flip()
-						my_keyboard.flush()
+						my_keyboard.flush()					
 			if self.stabilize:
 				gazePos = gx+xc, gy+yc
 			else:
 				gazePos = None
-			for item in self.items:
+			for item in self.items:			
 				if item.itemId == cue:
 					showCue = True
 				else:
@@ -871,33 +721,32 @@ define inline_script itemArray
 			if self.writingIndicator != None:
 				self.writingIndicator.draw()
 			win.flip()
-
+			
 		def meanLikelihood(self):
-
+			
 			"""
 			returns:
 				The mean likelihood of all items.
 			"""
-
+			
 			return np.mean([item.likelihood() for item in self.items])
-
-		def invert(self, dur=500, collectDur=1):
-
+			
+		def invert(self, dur=500):
+			
 			"""
 			desc:
 				Inverts the brightness of all items.
-
+				
 			keywords:
 				steps:	The duration of the inversion animation.
 			"""
-
+			
 			f = np.linspace(1, -1, dur)
 			oldBrightness = np.array([item.brightness for item in self.items])
 			t0 = exp.time()
 			i = 0
-			while i < dur:
-				n = 0
-				meanPupilSize = self.measure(collectDur)
+			while i < dur:			
+				n = 0			
 				for item in self.items:
 					item.setBrightness(oldBrightness[n] * f[i])
 					n += 1
@@ -909,17 +758,17 @@ define inline_script itemArray
 			for item in self.items:
 				item.setBrightness(oldBrightness[n] * f[-1])
 				n += 1
-
+				
 		def setMode2(self, mode2, steps=50):
-
+			
 			"""
 			desc:
 				See mode2 description in __init__().
-
+				
 			arguments:
 				mode2:	See __init__().
 			"""
-
+			
 			mode2 = str(mode2)
 			assert(mode2 in ['180', '90up', '90down', '90upmirror', '90downmirror'])
 			if len(self.items) != 2 or mode2 == '180':
@@ -927,21 +776,21 @@ define inline_script itemArray
 			if '90down' in mode2:
 				# If item 0 is closer to the -.25pi angle than item 1
 				if np.abs(self.items[0].angle+.25*np.pi) < \
-					np.abs(self.items[1].angle+.25*np.pi):
+					np.abs(self.items[1].angle+.25*np.pi):			
 					a0 = -.25 * np.pi
 					a1 = -.75 * np.pi
 				else:
 					a0 = -.75 * np.pi
-					a1 = -.25 * np.pi
+					a1 = -.25 * np.pi				
 			elif '90up' in mode2:
 				# If item 0 is closer to the .25pi angle than item 1
 				if np.abs(self.items[0].angle-.25*np.pi) < \
-					np.abs(self.items[1].angle-.25*np.pi):
+					np.abs(self.items[1].angle-.25*np.pi):			
 					a0 = .25 * np.pi
 					a1 = .75 * np.pi
 				else:
 					a0 = .75 * np.pi
-					a1 = .25 * np.pi
+					a1 = .25 * np.pi				
 			if steps > 0:
 				x0 = self.items[0].ecc*np.cos(a0)
 				y0 = self.items[0].ecc*np.sin(a0)
@@ -956,30 +805,19 @@ define inline_script itemArray
 					self.items[1].setXY((traceX1[i], traceY1[i]))
 					self.show()
 			self.items[0].setAngle(a0)
-			self.items[1].setAngle(a1)
+			self.items[1].setAngle(a1)				
 			if 'mirror' in mode2:
 				self.items[0].showMirror = True
 				self.items[1].showMirror = True
-
-		def measure(self, collectDur):
-			eyetracker.log('start_collection')
-			a = collectPupilTrace(self, collectDur)
-			meanPupilSize = np.median(a)
-			self.pupilSizeArray.append(meanPupilSize)
-			
-			self.completePupilSizeArray.append(meanPupilSize)
-			self.pupilSizeIndicator.setText(str(meanPupilSize))
-			eyetracker.log('end_collection')
-			return meanPupilSize
-
-		def selectionLoop(self, initialSleep=1000, invertSteps=500, adaptDur=1,
-			collectDur=1, target=None, mode2='180', likelihoodThr=2,
+				
+		def selectionLoop(self, initialSleep=1000, invertSteps=500, adaptDur=500,
+			collectDur=250, target=None, mode2='180', likelihoodThr=2,
 			cue=None):
-
+			
 			"""
 			desc:
 				Starts the selection loop, which ends when only one item is left.
-
+				
 			keywords:
 				initialSleep:	The initial sleep duration.
 				invertStep:		The number of franes for the invert animation.
@@ -994,49 +832,39 @@ define inline_script itemArray
 								than 2 times the mean likelihood.
 				cue:			Indicates the item that should be cued, or None to
 								cue no items.
-
+				
 			returns:
 				An (item, rounds) tuple containing the winning item and the number
 				of rounds that the selection loop took.
 			"""
-
+			
 			self.setMode2(mode2, steps=0)
 			eyetracker.log('start_selection_loop')
-			eyetracker.log('var target %s' % target)
+			eyetracker.log('var target %s' % target)		
 			eyetracker.log('var mode2 %s' % mode2)
 			eyetracker.log('var stabilize %s' % self.stabilize)
 			for item in self.items:
-				item.log(status='init')
+				item.log(status='init')		
 			rounds = 0
 			self.show(background=False, cue=cue)
 			exp.sleep(initialSleep)
 			self.show()
 			collectPupilTrace(self, initialSleep)
-
-			start_time = exp.time()
-			first_time = exp.time()
-			round_dur = 1250
-			current_dur = 0
-			while True:
-				if exp.time()-first_time > 30000:
-					if target != None:
-						hit = False
-						if not hit:
-							break
-					
-				eyetracker.log('start_round %d' % rounds)
-				if current_dur >=round_dur:
-					#Invert
-					eyetracker.log('start_invert')
-					self.invert(invertSteps, collectDur)
-					eyetracker.log('end_invert')
-					current_dur = 0
-					start_time = exp.time()
-				else:
-					current_dur = exp.time()-start_time
-				meanPupilSize = self.measure(collectDur)
+			while True:				
+				eyetracker.log('start_round %d' % rounds)			
+				eyetracker.log('start_invert')
+				self.invert(dur=invertSteps)
+				eyetracker.log('end_invert')
+				eyetracker.log('start_adaptation')
+				collectPupilTrace(self, adaptDur)
+				eyetracker.log('end_adaptation')
+				eyetracker.log('start_collection')
+				a = collectPupilTrace(self, collectDur)
+				eyetracker.log('end_collection')
+				meanPupilSize = np.median(a)
+				self.pupilSizeIndicator.setText(str(meanPupilSize))
 				for item in self.items:
-					item.setPupilSize(self.pupilSizeArray, self.completePupilSizeArray)
+					item.setPupilSize(meanPupilSize)				
 				_items = []
 				prune = False
 				for item in self.items:
@@ -1045,8 +873,8 @@ define inline_script itemArray
 						_items.append(item)
 					else:
 						item.log(status='prune')
-						prune = True
-				self.items = _items
+						prune = True					
+				self.items = _items			
 				if prune:
 					eyetracker.log('prune yes')
 					self.setMode2(mode2)
@@ -1058,9 +886,6 @@ define inline_script itemArray
 						for item in self.items:
 							item.setBrightness(brightness)
 							brightness *= -1
-							item.lLikelihood = [1]
-						self.pupilSizeArray = []
-						first_time = exp.time()
 				else:
 					eyetracker.log('prune no')
 				eyetracker.log('end_round')
@@ -1074,7 +899,7 @@ define inline_script itemArray
 					if not hit:
 						break
 				if len(self.items) == 1:
-					break
+					break								
 			if len(self.items) > 1:
 				exp.set('correct_selection', 0)
 				Item(self, '?', 0, self.ecc).focus()
@@ -1088,7 +913,7 @@ define inline_script itemArray
 				else:
 					if winner.itemId == target:
 						exp.set('correct_selection', 1)
-
+						
 					else:
 						exp.set('correct_selection', 0)
 			eyetracker.log('var rounds %d' % rounds)
@@ -1209,28 +1034,27 @@ define inline_script smoothing
 	set description "Executes Python code"
 	___run__
 	import numpy
-	import math
-
+	
 	def smooth(x, window_len=11, window='hanning'):
 		"""
 		desc:
 			Smooths an array using a window with requested size and shape.
-
+			
 		source:
 			<http://wiki.scipy.org/Cookbook/SignalSmooth>
-
+		
 		arguments:
 			x:				The input array.
-
+			
 		keywords:
 			window_len: 	The length of the window. Should be an odd integer.
 			window:			The type of window from 'flat', 'hanning', 'hamming',
 							'bartlett', 'blackman'.
-
+	
 		returns:
-			A smoothed array.
+			A smoothed array.		
 		"""
-
+	
 		if x.ndim != 1:
 			raise ValueError, "smooth only accepts 1 dimension arrays."
 		if x.size < window_len:
@@ -1260,15 +1084,15 @@ define inline_script speech
 	set description "Executes Python code"
 	___run__
 	def say(msg):
-
+		
 		"""
 		desc:
 			Speak a message with the espeak synthesizer (if available).
-
+			
 		arguments:
 			msg:	The message to speak.
 		"""
-
+		
 		try:
 			subprocess.Popen(['espeak', '-s', '140', msg])
 		except:

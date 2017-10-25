@@ -1,4 +1,7 @@
 //TODO
 
-* Calc likelihood based on the ideal pupilsize derivative (based on the ideal pupilsize curve)
-* Determine the ideal pupilsize curve (which is based on the current position in the 1250ms brightness cycle)
+* Decide how many trials per program per participant in the experiment
+
+
+X Calc likelihood based on the ideal pupilsize derivative (based on the ideal pupilsize curve)
+X Determine the ideal pupilsize curve (which is based on the current position in the 1250ms brightness cycle)

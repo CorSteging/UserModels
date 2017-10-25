@@ -1,0 +1,6 @@
+Relevant columns in output data:
+
+- target (letter that had to be selected)
+- total_correct (cumulative amount)
+- total_response_time (cumulative selection time)
+- ...
