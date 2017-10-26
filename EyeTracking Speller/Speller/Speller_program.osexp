@@ -78,7 +78,7 @@ define loop eight_options
 	set offset no
 	set item exp_sequence
 	set description "Repeatedly runs another item"
-	set cycles 10
+	set cycles 8
 	set continuous no
 	set column_order "target;itemIds"
 	set break_if_on_first yes
@@ -569,7 +569,7 @@ define inline_script item
 
 		def calcLikelihood(self, pupilSizeChange, brightnessChange, pupilSizeArray, completePupilSizeArray):
 
-			changeConstant = 0.01*len(pupilSizeArray)/100
+			changeConstant = 0.007*len(pupilSizeArray)/100
 			
 			if len(pupilSizeArray) > 100:
 				changeConstant = 0.02*len(pupilSizeArray)/100
@@ -578,15 +578,15 @@ define inline_script item
 			
 
 			#default
-			maxPupilSize = 3500
-			minPupilSize = 2000
+			maxPupilSize = 3750
+			minPupilSize = 1500
 
 			#After five seconds, adapt it to the users eyes
 			if len(completePupilSizeArray) > 500:
 				#maxPupilSize = min(maxPupilSize,(maxPupilSize + max(completePupilSizeArray[-499:]))/2)
 				#minPupilSize = max(minPupilSize,(minPupilSize + min(completePupilSizeArray[-499:]))/2)
-				maxPupilSize = min(maxPupilSize+1000,(maxPupilSize + max(completePupilSizeArray))/2)
-				minPupilSize = max(minPupilSize-1000,(minPupilSize + min(completePupilSizeArray))/2)
+				maxPupilSize = max(maxPupilSize-1000, min(maxPupilSize+1000,(maxPupilSize + max(completePupilSizeArray))/2))
+				minPupilSize = min(minPupilSize+1000, max(minPupilSize-1000,(minPupilSize + min(completePupilSizeArray))/2))
 
 
 			#dark = -1
@@ -602,9 +602,9 @@ define inline_script item
 			#NoChange
 			else:
 				if self.lPrediction[-1]==1 and pupilSizeArray[-1] < minPupilSize + (maxPupilSize-minPupilSize)/2:
-					likelihood = self.lLikelihood[-1] + changeConstant
+					likelihood = self.lLikelihood[-1] + (changeConstant*1.5)
 				elif self.lPrediction[-1]==-1 and pupilSizeArray[-1] > minPupilSize + (maxPupilSize-minPupilSize)/2:
-					likelihood = self.lLikelihood[-1] + changeConstant
+					likelihood = self.lLikelihood[-1] + (changeConstant*1.5)
 				else:
 					likelihood = self.lLikelihood[-1]
 			delay = 4 # pupil response delay, between 8 and 35 ms (3=30 ms)
@@ -618,9 +618,9 @@ define inline_script item
 				#NoChange
 				else:
 					if self.lPrediction[-delay]==1 and pupilSizeArray[-1] < minPupilSize + (maxPupilSize-minPupilSize)/2:
-						likelihood = self.lLikelihood[-1] + changeConstant
+						likelihood = self.lLikelihood[-1] + (changeConstant*1.5)
 					elif self.lPrediction[-delay]==-1 and pupilSizeArray[-1] > minPupilSize + (maxPupilSize-minPupilSize)/2:
-						likelihood = self.lLikelihood[-1] + changeConstant
+						likelihood = self.lLikelihood[-1] + (changeConstant*1.5)
 					else:
 						likelihood = self.lLikelihood[-1]
 
@@ -866,8 +866,8 @@ define inline_script itemArray
 					showCue = False
 				item.show(background=background, gazePos=gazePos, cue=showCue)
 			self.fixDot.draw()
-			if self.debug:
-				self.pupilSizeIndicator.draw()
+			#if self.debug:
+			#	self.pupilSizeIndicator.draw()
 			if self.writingIndicator != None:
 				self.writingIndicator.draw()
 			win.flip()
