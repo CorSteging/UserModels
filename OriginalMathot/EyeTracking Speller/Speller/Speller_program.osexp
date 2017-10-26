@@ -78,7 +78,7 @@ define loop eight_options
 	set offset no
 	set item exp_sequence
 	set description "Repeatedly runs another item"
-	set cycles 10
+	set cycles 8
 	set continuous no
 	set column_order "target;itemIds"
 	set break_if_on_first yes
