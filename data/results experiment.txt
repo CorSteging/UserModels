@@ -38,10 +38,10 @@ ons:
 G:2X, D:V, C:1X, B:2X, F:3X, E:1X, H:2L, A:3X (avg 13.49s)
 
 mathot:
-G:V, C:3X, E:2X, B:2X, G:V, H:1X, A:X3, F:1X (avg 37.04s)
+G:V, C:3X, E:2X, B:2X, D:V, H:1X, A:X3, F:1X (avg 37.04s)
 
 =============================================================
-Sub 5 (?):
+Sub 5 (Stefan):
 mathot:
 
 ons:

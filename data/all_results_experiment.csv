@@ -1,0 +1,97 @@
+subject, subname, program, progname, trialNr, totTrailNr, letter, response_time, correct, fail_reason, fail_round
+1, Marten, 1, standard, 1, 1, E, 24.45888, 1,,
+1, Marten, 1, standard, 2, 2, B, 18.0032, 1,,
+1, Marten, 1, standard, 3, 3, H, 16.64815, 1,,
+1, Marten, 1, standard, 4, 4, F, 17.97392, 1,,
+1, Marten, 1, standard, 5, 5, G, 19.20034, 1,,
+1, Marten, 1, standard, 6, 6, D, 27.09542, 1,,
+1, Marten, 1, standard, 7, 7, C, 20.54648, 1,,
+1, Marten, 1, standard, 8, 8, A, 15.35508, 1,,
+1, Marten, 2, derivative, 1, 9, , , , ,
+1, Marten, 2, derivative, 2, 10, , , , ,
+1, Marten, 2, derivative, 3, 11, , , , ,
+1, Marten, 2, derivative, 4, 12, , , , ,
+1, Marten, 2, derivative, 5, 13, , , , ,
+1, Marten, 2, derivative, 6, 14, , , , ,
+1, Marten, 2, derivative, 7, 15, , , , ,
+1, Marten, 2, derivative, 8, 16, , , , ,
+2, Cor, 1, standard, 1, 1, G, 54.24121, 1,,
+2, Cor, 1, standard, 2, 2, F, 85.41925, 1,,
+2, Cor, 1, standard, 3, 3, E, 34.86112, 1,,
+2, Cor, 1, standard, 4, 4, A, 34.81985, 1,,
+2, Cor, 1, standard, 5, 5, D, 31.00093, 1,,
+2, Cor, 1, standard, 6, 6, B, 32.21914, 1,,
+2, Cor, 1, standard, 7, 7, H, 37.48847, 1,,
+2, Cor, 1, standard, 8, 8, C, 28.38226, 1,,
+2, Cor, 2, derivative, 1, 9, B, 9.175238, 0, WRONG, 2
+2, Cor, 2, derivative, 2, 10, C, 5.434682, 0, WRONG, 1
+2, Cor, 2, derivative, 3, 11, H, 32.87844, 0, TIMEOUT, 1
+2, Cor, 2, derivative, 4, 12, D, 28.06216, 1,, 
+2, Cor, 2, derivative, 5, 13, A, 9.16336, 0, WRONG, 2
+2, Cor, 2, derivative, 6, 14, F, 5.480838, 0, WRONG, 1
+2, Cor, 2, derivative, 7, 15, G, 11.785, 1,,
+2, Cor, 2, derivative, 8, 16, E, 5.457787, 0, WRONG, 1
+3, Kim, 1, standard, 1, 9, E, 56.9067, 1,,
+3, Kim, 1, standard, 2, 10, B, 80.3439, 0, WRONG, 3
+3, Kim, 1, standard, 3, 11, D, 32.2353, 1,,
+3, Kim, 1, standard, 4, 12, F, 24.9041, 0, WRONG, 1
+3, Kim, 1, standard, 5, 13, A, 65.9002, 0, WRONG, 3
+3, Kim, 1, standard, 6, 14, H, 62.0374, 1,,
+3, Kim, 1, standard, 7, 15, G, 33.5576, 1,,
+3, Kim, 1, standard, 8, 16, C, 8.938, 0, WRONG, 2
+3, Kim, 2, derivative, 1, 1, D, 40.01570, 0, TIMEOUT, 3
+3, Kim, 2, derivative, 2, 2, C, 37.16096, 0, TIMEOUT, 2
+3, Kim, 2, derivative, 3, 3, B, 8.52086, 0, WRONG, 2
+3, Kim, 2, derivative, 4, 4, A, 12.97579, 1,,
+3, Kim, 2, derivative, 5, 5, G, 17.98955, 1,,
+3, Kim, 2, derivative, 6, 6, F, 5.87124, 0, WRONG, 1
+3, Kim, 2, derivative, 7, 7, E, 10.36129, 0, WRONG, 2
+3, Kim, 2, derivative, 8, 8, H, 8.41658, 1,,
+4, Richard, 1, standard, 1, 9, G, 30.91242, 1,,
+4, Richard, 1, standard, 2, 10, C, 63.3885, 0, WRONG, 3
+4, Richard, 1, standard, 3, 11, E, 15.42062, 0, WRONG, 2
+4, Richard, 1, standard, 4, 12, B, 20.52733, 0, WRONG, 2
+4, Richard, 1, standard, 5, 13, D, 36.05586, 1,,
+4, Richard, 1, standard, 6, 14, H, 19.77509, 0, WRONG, 1
+4, Richard, 1, standard, 7, 15, A, 84.02457, 0, WRONG, 3
+4, Richard, 1, standard, 8, 16, F, 26.22908, 0, WRONG, 1
+4, Richard, 2, derivative, 1, 1, G, 10.34454, 0, WRONG, 2
+4, Richard, 2, derivative, 2, 2, D, 13.71068, 1,,
+4, Richard, 2, derivative, 3, 3, C, 5.78847, 0, WRONG, 1
+4, Richard, 2, derivative, 4, 4, B, 10.17682, 0, WRONG, 2
+4, Richard, 2, derivative, 5, 5, F, 13.63977, 0, WRONG, 3
+4, Richard, 2, derivative, 6, 6, E, 5.66674, 0, WRONG, 1
+4, Richard, 2, derivative, 7, 7, H, 35.64233, 0, TIMEOUT, 2
+4, Richard, 2, derivative, 8, 8, A, 12.9237, 0, WRONG, 3
+5, Stefan, 1, standard, 1, 1, , , , ,
+5, Stefan, 1, standard, 2, 2, , , , ,
+5, Stefan, 1, standard, 3, 3, , , , ,
+5, Stefan, 1, standard, 4, 4, , , , ,
+5, Stefan, 1, standard, 5, 5, , , , ,
+5, Stefan, 1, standard, 6, 6, , , , ,
+5, Stefan, 1, standard, 7, 7, , , , ,
+5, Stefan, 1, standard, 8, 8, , , , ,
+5, Stefan, 2, derivative, 1, 9, , , , ,
+5, Stefan, 2, derivative, 2, 10, , , , ,
+5, Stefan, 2, derivative, 3, 11, , , , ,
+5, Stefan, 2, derivative, 4, 12, , , , ,
+5, Stefan, 2, derivative, 5, 13, , , , ,
+5, Stefan, 2, derivative, 6, 14, , , , ,
+5, Stefan, 2, derivative, 7, 15, , , , ,
+5, Stefan, 2, derivative, 8, 16, , , , ,
+6, Albert, 1, standard, 1, 9, , , , ,
+6, Albert, 1, standard, 2, 10, , , , ,
+6, Albert, 1, standard, 3, 11, , , , ,
+6, Albert, 1, standard, 4, 12, , , , ,
+6, Albert, 1, standard, 5, 13, , , , ,
+6, Albert, 1, standard, 6, 14, , , , ,
+6, Albert, 1, standard, 7, 15, , , , ,
+6, Albert, 1, standard, 8, 16, , , , ,
+6, Albert, 2, derivative, 1, 1, , , , ,
+6, Albert, 2, derivative, 2, 2, , , , ,
+6, Albert, 2, derivative, 3, 3, , , , ,
+6, Albert, 2, derivative, 4, 4, , , , ,
+6, Albert, 2, derivative, 5, 5, , , , ,
+6, Albert, 2, derivative, 6, 6, , , , ,
+6, Albert, 2, derivative, 7, 7, , , , ,
+6, Albert, 2, derivative, 8, 8, , , , ,
