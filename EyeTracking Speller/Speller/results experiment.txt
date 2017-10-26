@@ -1,0 +1,53 @@
+Per participant, per trial the outcome
+format = letter:outcome
+V = correct, X = wrong, L = out of time (round>30sec), 1/2/3 = round in which it goes wrong/out of time
+
+NB sub 0 = during test phase (no participant)
+
+=============================================================
+sub 1 (Marten):
+mathot:
+E:V, B:V, H:V, F:V, G:V, D:V, C:V, A:V (avg 19.91 s)
+
+ons (fout):
+fst, H:1X, F:2L, G:2X, B:2L, A:2X, C:2X
+snd, F: 2X, B:2L, H:1X, G:3L, D:2X,
+
+ons (over TODO):
+
+
+=============================================================
+sub 2 (Cor):
+mathot:
+G:V, F:V, E:V, A:V, D:V, B:V, H:V, C:V (avg 42.30s)
+
+ons:
+B:2X, C:1X, H:1L, D:V, A:2X, F:1X, G:V, E:1X (avg 13.43s)
+
+=============================================================
+Sub 3 (Kim):
+ons:
+D:3L, C:2L, B:2X, A:V, G:V, F:1X, E:2X, H:V (, D:3X)
+
+mathot:
+E:V, B:3X, D:V, F:1X, A:3X, H:V, G:V, C:2X
+
+=============================================================
+Sub 4 (Richard):
+ons:
+G:2X, D:V, C:1X, B:2X, F:3X, E:1X, H:2L, A:3X (avg 13.49s)
+
+mathot:
+G:V, C:3X, E:2X, B:2X, G:V, H:1X, A:X3, F:1X (avg 37.04s)
+
+=============================================================
+Sub 5 (?):
+mathot:
+
+ons:
+
+=============================================================
+Sub 6 (Albert):
+ons:
+
+mathot:
