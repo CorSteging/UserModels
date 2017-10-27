@@ -63,35 +63,35 @@ subject, subname, program, progname, trialNr, totTrailNr, letter, response_time,
 4, Richard, 2, derivative, 6, 6, E, 5.66674, 0, WRONG, 1
 4, Richard, 2, derivative, 7, 7, H, 35.64233, 0, TIMEOUT, 2
 4, Richard, 2, derivative, 8, 8, A, 12.9237, 0, WRONG, 3
-5, Stefan, 1, standard, 1, 1, , , , ,
-5, Stefan, 1, standard, 2, 2, , , , ,
-5, Stefan, 1, standard, 3, 3, , , , ,
-5, Stefan, 1, standard, 4, 4, , , , ,
-5, Stefan, 1, standard, 5, 5, , , , ,
-5, Stefan, 1, standard, 6, 6, , , , ,
-5, Stefan, 1, standard, 7, 7, , , , ,
-5, Stefan, 1, standard, 8, 8, , , , ,
-5, Stefan, 2, derivative, 1, 9, , , , ,
-5, Stefan, 2, derivative, 2, 10, , , , ,
-5, Stefan, 2, derivative, 3, 11, , , , ,
-5, Stefan, 2, derivative, 4, 12, , , , ,
-5, Stefan, 2, derivative, 5, 13, , , , ,
-5, Stefan, 2, derivative, 6, 14, , , , ,
-5, Stefan, 2, derivative, 7, 15, , , , ,
-5, Stefan, 2, derivative, 8, 16, , , , ,
-6, Albert, 1, standard, 1, 9, , , , ,
-6, Albert, 1, standard, 2, 10, , , , ,
-6, Albert, 1, standard, 3, 11, , , , ,
-6, Albert, 1, standard, 4, 12, , , , ,
-6, Albert, 1, standard, 5, 13, , , , ,
-6, Albert, 1, standard, 6, 14, , , , ,
-6, Albert, 1, standard, 7, 15, , , , ,
-6, Albert, 1, standard, 8, 16, , , , ,
-6, Albert, 2, derivative, 1, 1, , , , ,
-6, Albert, 2, derivative, 2, 2, , , , ,
-6, Albert, 2, derivative, 3, 3, , , , ,
-6, Albert, 2, derivative, 4, 4, , , , ,
-6, Albert, 2, derivative, 5, 5, , , , ,
-6, Albert, 2, derivative, 6, 6, , , , ,
-6, Albert, 2, derivative, 7, 7, , , , ,
-6, Albert, 2, derivative, 8, 8, , , , ,
+5, Stefan, 1, standard, 1, 1, G, , 1, ,
+5, Stefan, 1, standard, 2, 2, B, , 1, ,
+5, Stefan, 1, standard, 3, 3, D, , 0, WRONG, 1
+5, Stefan, 1, standard, 4, 4, C, , 1, ,
+5, Stefan, 1, standard, 5, 5, A, , 0, WRONG, 3
+5, Stefan, 1, standard, 6, 6, F, , 1, ,
+5, Stefan, 1, standard, 7, 7, E, , 1, ,
+5, Stefan, 1, standard, 8, 8, H, , 0, WRONG, 1
+5, Stefan, 2, derivative, 1, 9, B, , 0, WRONG, 2
+5, Stefan, 2, derivative, 2, 10, H, , 0, WRONG, 1
+5, Stefan, 2, derivative, 3, 11, G, , 0, WRONG, 1
+5, Stefan, 2, derivative, 4, 12, D, , 1, ,
+5, Stefan, 2, derivative, 5, 13, E, , 0, WRONG, 2
+5, Stefan, 2, derivative, 6, 14, A, , 0, WRONG, 1
+5, Stefan, 2, derivative, 7, 15, C, , 0, WRONG, 2
+5, Stefan, 2, derivative, 8, 16, F, , 0, WRONG, 3
+6, Albert, 1, standard, 1, 9, F, , 0, WRONG, 1
+6, Albert, 1, standard, 2, 10, B, , 0, WRONG, 3
+6, Albert, 1, standard, 3, 11, G, , 1, ,
+6, Albert, 1, standard, 4, 12, E, , 1, ,
+6, Albert, 1, standard, 5, 13, A, , 1, ,
+6, Albert, 1, standard, 6, 14, H, , 1, ,
+6, Albert, 1, standard, 7, 15, C, , 0, WRONG, 3
+6, Albert, 1, standard, 8, 16, D, , 1, ,
+6, Albert, 2, derivative, 1, 1, B, , 0, WRONG, 2
+6, Albert, 2, derivative, 2, 2, G, , 0, WRONG, 1
+6, Albert, 2, derivative, 3, 3, H, , 1, ,
+6, Albert, 2, derivative, 4, 4, D, , 0, WRONG, 3
+6, Albert, 2, derivative, 5, 5, F, , 0, WRONG, 1
+6, Albert, 2, derivative, 6, 6, E, , 0, WRONG, 2
+6, Albert, 2, derivative, 7, 7, A, , 0, TIMEOUT, 1
+6, Albert, 2, derivative, 8, 8, C, , 0, WRONG, 2
