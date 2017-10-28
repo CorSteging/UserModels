@@ -1,4 +1,5 @@
 setwd("C:/Users/Richard/GIT/UserModels/data")
+setwd("C:/Users/Cor Steging/Documents/UserModels/data")
 # load data
 results <- read.csv("all_results_experiment.csv", header=TRUE)
 
@@ -33,6 +34,30 @@ d1 <- deriv_cor$response_time
 lmts <- range(d0,d1)
 
 boxplot(d0, d1, main="Response times of correct trials for the two systems", ylim=lmts, ylab="Response time (seconds)", names=c("Standard","Derivative"))
+
+
+#Pirateplot
+library("devtools")
+library("yarrr")
+require("BayesFactor")
+
+pirateplot(formula = results$response_time ~ results$program,
+           data = results,
+           main = "Response times of correct trials for the two systems", #give it an appropriate name
+           theme = 2,
+           pal = "southpark", # changing the color pallette, you can find out about other pallettes if you see it in the Help tab on the right
+           xlab = "System", #give it an appropriate name
+           ylab = "Response time (seconds)",
+           point.pch = 16,
+           point.o = .1, #opacity of the points
+           hdi.o = .0,
+           bar.f.o = .5,#opacity of the bars
+           avg.line.o = .5,
+           inf.method = "se",
+           gl.col = gray(.6), # Gridline specifications
+           gl.lty = 0,
+           gl.lwd = c(.5, 0))
+
 
 # test if difference in selection time is different
 # Both not normal distributed, so ttest cannot be used.
