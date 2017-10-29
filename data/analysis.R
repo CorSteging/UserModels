@@ -1,5 +1,5 @@
 setwd("C:/Users/Richard/GIT/UserModels/data")
-setwd("C:/Users/Cor Steging/Documents/UserModels/data")
+# setwd("C:/Users/Cor Steging/Documents/UserModels/data")
 # load data
 results <- read.csv("all_results_experiment.csv", header=TRUE)
 
@@ -33,7 +33,7 @@ d0 <- std_cor$response_time
 d1 <- deriv_cor$response_time
 lmts <- range(d0,d1)
 
-boxplot(d0, d1, main="Response times of correct trials for the two systems", ylim=lmts, ylab="Response time (seconds)", names=c("Standard","Derivative"))
+boxplot(d0, d1, main="Response times of correct trials for the two systems", ylim=lmts, ylab="Response time (seconds)", names=c("Standard","New"))
 
 
 #Pirateplot
