@@ -62,12 +62,12 @@ pirateplot(formula = results$response_time ~ results$program,
 # test if difference in selection time is different
 # Both not normal distributed, so ttest cannot be used.
 # Instead we use Two-sample Kolmogorov-Smirnov test
-ks.test(d0, d1)
+wilcox.test(d0, d1, paired=FALSE)
 
 # RESULT:
-# Two-sample Kolmogorov-Smirnov test
-#
+# Wilcoxon rank sum test
+# 
 # data:  d0 and d1
-# D = 0.875, p-value = 3.537e-05
-# alternative hypothesis: two-sided
+# W = 185, p-value = 8.557e-06
+# alternative hypothesis: true location shift is not equal to 0
 
