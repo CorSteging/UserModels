@@ -6,14 +6,18 @@ NB sub 0 = during test phase (no participant)
 
 =============================================================
 sub 1 (Marten):
-mathot:
+mathot fst:
 E:V, B:V, H:V, F:V, G:V, D:V, C:V, A:V (avg 19.91 s)
+
+mathot snd:
+D:V, A:V, G:V, B:V, F:V, C:V, E:V, H:V (avg 19.60 s)
 
 ons (fout):
 fst, H:1X, F:2L, G:2X, B:2L, A:2X, C:2X
 snd, F: 2X, B:2L, H:1X, G:3L, D:2X,
 
-ons (over TODO):
+ons (over):
+G:2X, F:2X, D:2X, B:1X, E:1X, H:3X, A:1L, C:3X (avg 12.31)
 
 =============================================================
 sub 2 (Cor):
