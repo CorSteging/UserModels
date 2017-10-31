@@ -3,9 +3,6 @@ setwd("C:/Users/Richard/GIT/UserModels/data")
 # load data
 results <- read.csv("all_results_experiment.csv", header=TRUE)
 
-# leave out subject 1 (since he did not yet do derivative trials)
-results <- results[!(results$subject==1), ]
-
 # divide results into two groups for the two systems
 deriv_results <- results[results$program==2, ]
 std_results <- results[results$program==1, ]
@@ -23,10 +20,15 @@ mean(std_cor$response_time)		# 34.98883
 mean(deriv_cor$response_time)		# 14.90428
 
 # Plot of accuracy per system, for each participant
-accs <- rbind(c(2,8,2),c(3,4,3),c(4,2,1),c(5,5,1),c(6,5,1))
+accs <- rbind(c(1,8,0), c(2,8,2),c(3,4,3),c(4,2,1),c(5,5,1),c(6,5,1))
 accs <- as.data.frame(accs)
 names(accs) <- c("subject", "Std", "Deriv")
 accs
+barplot(accs$Std, names=accs$subject, xlab = "subject", 
+ylab = "number of correct trials", main="Number of correct trials per subject in the standard system")
+barplot(accs$Deriv, names=accs$subject, xlab = "subject", 
+ylab = "number of correct trials", main="Number of correct trials per subject in the new system")
+
 
 #boxplot per program, for time of correct trials
 d0 <- std_cor$response_time
@@ -37,26 +39,26 @@ boxplot(d0, d1, main="Response times of correct trials for the two systems", yli
 
 
 #Pirateplot
-library("devtools")
-library("yarrr")
-require("BayesFactor")
+#library("devtools")
+#library("yarrr")
+#require("BayesFactor")
 
-pirateplot(formula = results$response_time ~ results$program,
-           data = results,
-           main = "Response times of correct trials for the two systems", #give it an appropriate name
-           theme = 2,
-           pal = "southpark", # changing the color pallette, you can find out about other pallettes if you see it in the Help tab on the right
-           xlab = "System", #give it an appropriate name
-           ylab = "Response time (seconds)",
-           point.pch = 16,
-           point.o = .1, #opacity of the points
-           hdi.o = .0,
-           bar.f.o = .5,#opacity of the bars
-           avg.line.o = .5,
-           inf.method = "se",
-           gl.col = gray(.6), # Gridline specifications
-           gl.lty = 0,
-           gl.lwd = c(.5, 0))
+#pirateplot(formula = results$response_time ~ results$program,
+#           data = results,
+#           main = "Response times of correct trials for the two systems", #give it an appropriate name
+#           theme = 2,
+#           pal = "southpark", # changing the color pallette, you can find out about other pallettes if you see it in the Help tab on the right
+#           xlab = "System", #give it an appropriate name
+#           ylab = "Response time (seconds)",
+#           point.pch = 16,
+#           point.o = .1, #opacity of the points
+#           hdi.o = .0,
+#           bar.f.o = .5,#opacity of the bars
+#           avg.line.o = .5,
+#           inf.method = "se",
+#           gl.col = gray(.6), # Gridline specifications
+#           gl.lty = 0,
+#           gl.lwd = c(.5, 0))
 
 
 # test if difference in selection time is different
@@ -66,8 +68,8 @@ wilcox.test(d0, d1, paired=FALSE)
 
 # RESULT:
 # Wilcoxon rank sum test
-# 
+#
 # data:  d0 and d1
-# W = 185, p-value = 8.557e-06
+# W = 238, p-value = 3.415e-05
 # alternative hypothesis: true location shift is not equal to 0
 
