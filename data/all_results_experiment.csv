@@ -1,20 +1,20 @@
 subject, subname, program, progname, trialNr, totTrailNr, letter, response_time, correct, fail_reason, fail_round
-1, Marten, 1, standard, 1, 1, E, 24.45888, 1,,
-1, Marten, 1, standard, 2, 2, B, 18.0032, 1,,
-1, Marten, 1, standard, 3, 3, H, 16.64815, 1,,
-1, Marten, 1, standard, 4, 4, F, 17.97392, 1,,
-1, Marten, 1, standard, 5, 5, G, 19.20034, 1,,
-1, Marten, 1, standard, 6, 6, D, 27.09542, 1,,
-1, Marten, 1, standard, 7, 7, C, 20.54648, 1,,
-1, Marten, 1, standard, 8, 8, A, 15.35508, 1,,
-1, Marten, 2, derivative, 1, 9, , , , ,
-1, Marten, 2, derivative, 2, 10, , , , ,
-1, Marten, 2, derivative, 3, 11, , , , ,
-1, Marten, 2, derivative, 4, 12, , , , ,
-1, Marten, 2, derivative, 5, 13, , , , ,
-1, Marten, 2, derivative, 6, 14, , , , ,
-1, Marten, 2, derivative, 7, 15, , , , ,
-1, Marten, 2, derivative, 8, 16, , , , ,
+1, Marten, 1, standard, 1, 1, D, 17.96435, 1,,
+1, Marten, 1, standard, 2, 2, A, 19.33230, 1,,
+1, Marten, 1, standard, 3, 3, G, 24.47204, 1,,
+1, Marten, 1, standard, 4, 4, B, 19.26968, 1,,
+1, Marten, 1, standard, 5, 5, F, 25.74422, 1,,
+1, Marten, 1, standard, 6, 6, C, 16.66273, 1,,
+1, Marten, 1, standard, 7, 7, E, 14.12389, 1,,
+1, Marten, 1, standard, 8, 8, H, 19.21089, 1,,
+1, Marten, 2, derivative, 1, 9, G, 10.08927, 0, WRONG, 2
+1, Marten, 2, derivative, 2, 10, F, 10.058757, 0, WRONG, 2 
+1, Marten, 2, derivative, 3, 11, D, 9.171196, 0, WRONG, 2
+1, Marten, 2, derivative, 4, 12, B, 5.660661, 0, WRONG, 1
+1, Marten, 2, derivative, 5, 13, E, 5.844621, 0, WRONG, 1
+1, Marten, 2, derivative, 6, 14, H, 13.162163, 0, WRONG, 3
+1, Marten, 2, derivative, 7, 15, A, 32.902537, 0, TIMEOUT, 1  
+1, Marten, 2, derivative, 8, 16, C, 11.610156, 0, WRONG, 3
 2, Cor, 1, standard, 1, 1, G, 54.24121, 1,,
 2, Cor, 1, standard, 2, 2, F, 85.41925, 1,,
 2, Cor, 1, standard, 3, 3, E, 34.86112, 1,,
