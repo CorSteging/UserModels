@@ -1,0 +1,7 @@
+Richard:
+Helped changing the code such that pupil size data is requested more frequently.
+Helped with the new evidence collection.
+Tweaking parameters.
+Designed (most of) the experiment.
+Conducting the experiment.
+Data processing and (basic) analysis.
