@@ -3,6 +3,7 @@ Helped changing the code such that pupil size data is requested more frequently.
 Helped with the new evidence collection.
 Tweaking parameters.
 Designed the experiment.
+Made code experiment-ready.
 Conducting the experiment.
 Data processing, and basic analysis.
 
