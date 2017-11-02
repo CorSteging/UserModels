@@ -5,3 +5,12 @@ Tweaking parameters.
 Designed (most of) the experiment.
 Conducting the experiment.
 Data processing and (basic) analysis.
+
+Cor:
+Changed code to measure and record pupil size continuously.
+Designed and implemented the new likelihood function.
+Made the minimum and maximum pupil size adapt to the pupil of the user.
+Added a delay to account for pupil dilation latency.
+Tweaking parameters.
+Conducting the experiment.
+Additional data analysis.
