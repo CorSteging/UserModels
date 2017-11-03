@@ -15,3 +15,11 @@ Added a delay to account for pupil dilation latency.
 Tweaking parameters.
 Conducting the experiment.
 Additional data analysis.
+
+Albert
+Changed code to use the derivative.
+Helpend implementing evidence collection.
+Analyzed the original Mathot code for functionality.
+Tweaking parameters.
+Helped with desining the likelihood function
+Helped creating the new experiment.
